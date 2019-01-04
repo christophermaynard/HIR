@@ -1,0 +1,37 @@
+\documentclass[a4]{article}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{dsl}
+{
+  language=python, 
+  keywordstyle=\color{red}, 
+  commentstyle=\color{blue}, 
+  morekeywords={forall},   keywordstyle=\color{red},        
+  numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt,
+  classoffset=1,
+  morekeywords={computation, field, imap},   keywordstyle=\color{orange}
+}
+
+\begin{document}
+\begin{lstlisting}[style=dsl]
+computation GP():
+  field rhs, f
+  imap map1
+  tmp fem_tmp
+
+  forall cell in domain:
+    for k in bottomLayer, topLayer-1:
+      fem_tmp = {
+            # FEM computation, 
+            # loop nest over quadrature, ndf1, ndf2
+            # evaluation is sum into fem_tmp
+            # of sums of products of weights, 
+            # basis_functions, field1
+        }
+      forall df in ndf1:
+        rhs[map1[cell,df]+k]] = \ 
+           rhs[cell,map1[df]+k] + fem_tmp[df]
+
+\end{lstlisting}
+\end{document}
