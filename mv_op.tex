@@ -1,0 +1,23 @@
+\documentclass{report}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\input{lststyle_hir.tex}
+
+\begin{document}
+\begin{lstlisting}[style=dsl]
+computation MV():
+  field y, x
+  op mm
+  imap map1
+
+  forall cell in horizontal domain:
+    for k in bottomLayer, topLayer - 1:
+       forall df1 in ndf1:
+          forall df2 in ndf1:
+             y[map1[cell,df] + k] = y[map1[cell,df] + k] 
+              + mm[df1,df2,(cell-1)*nlayers +k+1]*x[map1[cell,df2]+k]
+
+
+\end{lstlisting}
+\end{document}

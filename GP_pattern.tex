@@ -1,17 +1,8 @@
-\documentclass[a4paper,11pt]{report}
-\usepackage{listings}
+\documentclass{report}
 \usepackage{xcolor}
+\usepackage{listings}
 
-\lstdefinestyle{dsl}
-{
-  language=python, 
-  keywordstyle=\color{red}, 
-  commentstyle=\color{blue}, 
-  morekeywords={forall},   keywordstyle=\color{red},        
-  numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=5pt,
-  classoffset=1,
-  morekeywords={computation, field, imap},   keywordstyle=\color{orange}
-}
+\input{lststyle_hir.tex}
 
 \begin{document}
 \begin{lstlisting}[style=dsl]
