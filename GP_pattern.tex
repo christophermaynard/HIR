@@ -20,7 +20,7 @@ computation GP():
   imap map1
   tmp fem_tmp
 
-  forall cell in domain:
+  forall column in domain:
     for k in bottomLayer, topLayer-1:
       fem_tmp = {
             # FEM computation, 
@@ -31,7 +31,18 @@ computation GP():
         }
       forall df in ndf1:
         rhs[map1[cell,df]+k]] = \ 
-           rhs[cell,map1[df]+k] + fem_tmp[df]
+           rhs[map1[cell,df]+k] + fem_tmp[df]
 
 \end{lstlisting}
+\subsection{Dimensionality}
+\begin{enumeration}
+  \item Fields are one-dimensional unique degrees of freedom over an unstructured mesh.
+  \item They are a builtin type, a floating point number, which could for example be double precision.
+   \item The dimesionality is fixed, but is fields on different function spaces have different sizes.
+   \item The computation can be parallelised over columns. 
+   \item some kernels may be parallelised over the vertical dimension.
+\end{enumeration}
+
+\subsection{Access patterns}
+  
 \end{document}
