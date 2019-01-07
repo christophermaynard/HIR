@@ -20,7 +20,7 @@ computation MV():
 
 
 \end{lstlisting}
-\subsection{Dimensionality}
+\subsection{Dimensionality: Fields}
 \begin{enumerate}
   \item Fields are one-dimensional unique degrees of freedom over an unstructured mesh. 
   \item They are of a builtin type, a floating point number, which could, for example be double precision. 
@@ -28,6 +28,8 @@ computation MV():
    \item The computation can be parallelised over columns. 
 \end{enumerate}
 
+\subsection{Dimensionality: Operators}
+\begin{enumerate}
   \item Operators are three-dimensional first two dimesions are the number of degrees of freedom per cell from the space it maps from, to the space it maps to. The third dimsension is the number 3d cells.
   \item They are of a builtin type, a floating point number, which could, for example be double precision. 
    \item The dimesionality is fixed, but is fields on different function spaces have different sizes. 
@@ -47,7 +49,7 @@ computation MV():
      \item Accesses are absolute horizontally and relative vertically.
      \item Indirect addressing via the imap is required for the
        absolute horizontal addressing.
-     \item The field x and operator m is {\em Read}, the field y is {\em incremented}.
+     \item The field x and operator m is {\em read}, the field y is {\em incremented}.
      \item Whilst operators are domain decomposed, there is no need to overlap the domains ({\em i.e.} a halo) as the FEM assembly is performed when the operator is constructed.
 \end{enumerate}
 
