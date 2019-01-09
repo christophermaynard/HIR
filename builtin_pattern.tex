@@ -1,0 +1,64 @@
+\documentclass{report}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\input{lststyle_hir.tex}
+
+\begin{document}
+
+Built-ins in LFRic and PSyclone are dof-wise (point-wise) operations
+used for arithmetic operations on fields (e.g. adding, subtracting, 
+scaling, inner product). They can write the result of the operation 
+in a new quantity (e.g. $Z = X + Y$) or they can just
+update one of the input arguments (e.g. $X = X + Y$).
+
+\begin{lstlisting}[style=dsl]
+computation BuiltIn():
+  field x, y, z
+  dofmap
+  
+  dofmap = {z.function_space.last_dof
+            # last_dof can be owned or annexed,
+            # sanity check that all fields
+            # are on the same function space
+           }
+  
+  forall df in dofmap:
+    z.data[df] = Operation(\ 
+       x.data[df], y.data[df])
+
+\end{lstlisting}
+
+BuiltIns which take fields and return scalars effectively 
+perform global sums (such as sum of a field or an inner product).
+This process can be performed over local sums as shown below.
+\begin{lstlisting}[style=dsl]
+computation ReductionBuiltIn():
+  field sum, y, z
+  dofmap
+  lsum 
+  
+  dofmap = {z.function_space.last_dof
+            # last_dof is always owned,
+            # sanity check that all fields
+            # are on the same function space
+           }
+  
+  # OMP parallel do
+  forall df in dofmap:
+    lsum[thread_id] = lsum[thread_id] + \
+       Operation(\x.data[df], y.data[df])
+       
+   
+  forall thread_id in threads:
+    sum = sum + lsum[thread_id] 
+
+\end{lstlisting}
+
+
+Functionality to get last dof (owned, annexed and at defined depth)
+is stored in function space object.
+
+\end{document}
+
+
