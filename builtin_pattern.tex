@@ -2,6 +2,8 @@
 \usepackage{xcolor}
 \usepackage{listings}
 
+\newcommand{\concept}[1]{\fontfamily{pcr}{\selectfont #1}}
+
 \input{lststyle_hir.tex}
 
 \begin{document}
@@ -15,7 +17,11 @@ update one of the input arguments (e.g. $X = X + Y$).
 \begin{lstlisting}[style=dsl]
 computation BuiltIn():
   field x, y, z
-  dofmap
+  field
+  
+  
+  iterationSpace = DofMap
+  
   
   dofmap = {z.function_space.last_dof
             # last_dof can be owned or annexed,
@@ -29,14 +35,29 @@ computation BuiltIn():
 
 \end{lstlisting}
 
+or
+
+\begin{lstlisting}[style=dsl]
+computation BuiltIn{
+  field x, y, z
+  field entities
+  
+  entities = UniqueDofs(owned, annexed)
+  
+  iterationSpace = {
+    BuiltIn(z) = Operation<entities>(y, z; +, -, *, /)
+  }
+}
+\end{lstlisting}
+
 BuiltIns which take fields and return scalars effectively 
 perform global sums (such as sum of a field or an inner product).
 This process can be performed over local sums as shown below.
 \begin{lstlisting}[style=dsl]
 computation ReductionBuiltIn():
-  field sum, y, z
-  dofmap
-  lsum 
+  field y, z
+  field dofmap
+  scalar lsum, sum
   
   dofmap = {z.function_space.last_dof
             # last_dof is always owned,
@@ -55,6 +76,41 @@ computation ReductionBuiltIn():
 
 \end{lstlisting}
 
+or
+
+\begin{lstlisting}[style=dsl]
+computation reductionBuiltIn{
+  field x, y
+  scalar lsum, reductionBuiltIn
+  field entities
+  
+  entities = UniqueDofs(owned, annexed)
+  
+  iterationSpace = {
+    lsum = Operation<entities>(x, y; inner_product, [])
+    reductionBuiltIn(sum) = reduction<lsum(:)>
+  }                  
+}
+\end{lstlisting}
+
+Whether the unique dofs are accessed up to owned or annexed dofs can be 
+controlled by PSyclone.
+
+\subsection{Data Structure}
+\begin{itemize}
+\item Field data defined with \concept{Dofmap}
+\end{itemize}
+
+
+\subsection{Dimensionality}
+\begin{itemize}
+\item All 3D degrees of freedom.
+\end{itemize}
+
+\subsection{Access Pattern}
+\begin{itemize}
+\item Point-wise operations without neighbours, operate over unique dofs.
+\end{itemize}
 
 Functionality to get last dof (owned, annexed and at defined depth)
 is stored in function space object.

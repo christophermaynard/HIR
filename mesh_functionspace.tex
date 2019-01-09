@@ -205,9 +205,8 @@ Function space instance also contains functions to access information about the 
 so the application can loop over one or more of these groups. 
 
 LFRic utilises the \concept{CellDofmap} which stores all these dofs 
-(dofs in a cell volume plus the dofs on the faces, edges and vertices
-on the boundary of the cell)
-
+(dofs in a cell volume plus the dofs on the faces, 
+edges and vertices on the boundary of the cells in one column).
 
 The ordering of the dofs within the cell dofmap is dofs on (1) volumes, 
 (2) faces, (3) edges and (4) vertices. The ordering of faces, edges and 
@@ -238,6 +237,9 @@ $\left(i-\frac{1}{2},k-\frac{1}{2},k-\frac{1}{2}\right)$:
 \smallskip
 
 \end{minipage}
+
+A useful concept for point-wise operations are \concept{UniqueDofs}, which store
+the dofmap for an entire field.
 
 \subsection{Reference Element}
 
