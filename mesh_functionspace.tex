@@ -241,6 +241,10 @@ $\left(i-\frac{1}{2},k-\frac{1}{2},k-\frac{1}{2}\right)$:
 A useful concept for point-wise operations are \concept{UniqueDofs}, which store
 the dofmap for an entire field.
 
+\vspace{12pt}
+Some kernels require stencil data - input data from neighbouring cells. PSyclone constructs stencil
+maps from the dofmaps to provide to the kernel.
+
 \subsection{Reference Element}
 
 Contains the topology of a reference element, a unit cell, in order to implement placement of the 
